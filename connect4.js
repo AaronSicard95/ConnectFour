@@ -54,11 +54,8 @@ function findSpotForCol(x) {
   let row = null
   // TODO: write the real version of this, rather than always returning 0
   board.forEach((val,i)=>{
-    console.log(val[x], row);
     if(val[x] == 0){
-      console.log(true);
       row = i;
-      console.log(row);
     }
   })
   return row;
@@ -73,10 +70,8 @@ function placeInTable(y, x) {
   let color;
   currPlayer==1?color = "red":color="blue";
   newDiv.style.backgroundColor=color;
-  console.log(y,x);
   board[y][x] = currPlayer;
   document.getElementById(`${y}-${x}`).append(newDiv);
-  console.log(document.getElementById(`${y}-${x}`));
 }
 
 /** endGame: announce game end */
@@ -112,7 +107,6 @@ function handleClick(evt) {
 
   // switch players
   currPlayer==1 ? currPlayer = 2: currPlayer = 1;
-  console.log(currPlayer);
 }
 
 function checkTie(){
