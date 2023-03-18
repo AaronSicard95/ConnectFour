@@ -16,15 +16,15 @@ var board = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard() {
-  // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+  board = [[0,0,0,0,0,0,0,],[0,0,0,0,0,0,0,],[0,0,0,0,0,0,0,],[0,0,0,0,0,0,0,],[0,0,0,0,0,0,0,],[0,0,0,0,0,0,0,]];
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-
-  // TODO: add comment for this code
+  htmlBoard = document.querySelector("#board");
+  // Make top selector boxes and set id to width location
   var top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
@@ -36,7 +36,7 @@ function makeHtmlBoard() {
   }
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
+  // create box elements to hold chips
   for (var y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
     for (var x = 0; x < WIDTH; x++) {
@@ -51,20 +51,39 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
+  let row = null
   // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  board.forEach((val,i)=>{
+    console.log(val[x], row);
+    if(val[x] == 0){
+      console.log(true);
+      row = i;
+      console.log(row);
+    }
+  })
+  return row;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  let newDiv = document.createElement("div");
+  newDiv.classList = "piece";
+  let color;
+  currPlayer==1?color = "red":color="blue";
+  newDiv.style.backgroundColor=color;
+  console.log(y,x);
+  board[y][x] = currPlayer;
+  document.getElementById(`${y}-${x}`).append(newDiv);
+  console.log(document.getElementById(`${y}-${x}`));
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
   // TODO: pop up alert message
+  alert(`Player ${currPlayer} has won the Game!`);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -89,10 +108,15 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
+  checkTie()?alert("The Game comes to a draw :("):"";
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  currPlayer==1 ? currPlayer = 2: currPlayer = 1;
+  console.log(currPlayer);
+}
+
+function checkTie(){
+  return board.every((val=>(val.every((val2=>val2!=0)))))
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
